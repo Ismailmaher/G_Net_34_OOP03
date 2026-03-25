@@ -38,13 +38,74 @@ namespace G_Net_34_OOP03
 
             //c) What does the sealed keyword do when applied to a class? What about when applied to a method?
             //Prevent unsafe overrides and guarantee behavior consistency
-           // When applied to a method: It prevents a derived class from further overriding that specific method.
+            // When applied to a method: It prevents a derived class from further overriding that specific method.
 
-        //d) Can you create an object from a sealed class using new? Why or why not?
-      //Yes, Sealed prevents inheritance, not instantiation. You can still create objects.
+            //d) Can you create an object from a sealed class using new? Why or why not?
+            //Yes, Sealed prevents inheritance, not instantiation. You can still create objects.
 
 
             #endregion
-    }
+            #region Practical 
+            Console.Write("Enter Cinema Name: ");
+            string cinemaName = Console.ReadLine();
+            Cinema myCinema = new Cinema(cinemaName);
+            myCinema.OpenCinema();
+
+            bool adding = true;
+            while (adding)
+            {
+                Console.WriteLine("\nChoose Ticket Type: (1) Standard  (2) VIP  (3) IMAX  (0) Finish");
+                string choice = Console.ReadLine();
+
+                if (choice == "0") { adding = false; continue; }
+
+                Console.Write("Enter Movie Name: ");
+                string movie = Console.ReadLine();
+
+                Console.Write("Enter Base Price: ");
+                decimal price = decimal.Parse(Console.ReadLine());
+
+                switch (choice)
+                {
+                    case "1":
+                        Console.Write("Enter Seat Number (e.g., A-5): ");
+                        string seat = Console.ReadLine();
+                        myCinema.AddTicket(new StandardTicket(movie, price, seat));
+                        break;
+
+                    case "2":
+                        Console.Write("Lounge Access? (yes/no): ");
+                        bool lounge = Console.ReadLine().ToLower() == "yes";
+                        myCinema.AddTicket(new VIPTicket(movie, price, lounge));
+                        break;
+
+                    case "3":
+                        Console.Write("Is it 3D? (yes/no): ");
+                        bool is3D = Console.ReadLine().ToLower() == "yes";
+                        myCinema.AddTicket(new IMAXTicket(movie, price, is3D));
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid choice!");
+                        break;
+                }
+            }
+            myCinema.PrintAllTickets();
+
+            Console.WriteLine("\n========== Statistics ==========");
+            Console.WriteLine($"Total Tickets Created: {Ticket.GetTotalTickets()}\n");
+
+            myCinema.PrintExtraDetails(5, 100);
+
+            myCinema.CloseCinema();
+
+        
+
+            Console.WriteLine("\nPress any key to exit...");
+            Console.ReadKey();
+
+
+            #endregion
+        }
     }
 }
